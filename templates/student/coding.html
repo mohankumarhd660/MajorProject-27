@@ -1,0 +1,470 @@
+{% extends 'layouts/app_layout.html' %}
+{% set page_title = problem.title %}
+{% set nav_items = [
+  {'label':'Dashboard','href':url_for('student.dashboard'),'icon':'layout-dashboard','active':False},
+  {'label':'Tasks','href':url_for('student.tasks'),'icon':'check-square','active':False},
+  {'label':'Chat AI','href':url_for('student.chat'),'icon':'message-square','active':False},
+  {'label':'Coding Practice','href':url_for('student.coding_list'),'icon':'code','active':True},
+  {'label':'Analytics','href':url_for('student.analytics'),'icon':'bar-chart-3','active':False},
+] %}
+{% block content %}
+<style>
+  /* LeetCode-style Layout */
+  .lc-shell {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: 0;
+    height: calc(100vh - 140px);
+    min-height: 600px;
+    background: #0a0a0a;
+    border-radius: 0;
+    overflow: hidden;
+  }
+  .lc-left {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    background: #0a0a0a;
+    overflow: hidden;
+  }
+  .lc-right {
+    display: flex;
+    flex-direction: column;
+    background: #0a0a0a;
+    overflow: hidden;
+  }
+  
+  /* Problem Tabs Header */
+  .lc-tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    background: #141414;
+  }
+  .lc-tab {
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .lc-tab:hover { color: white; }
+  .lc-tab.active {
+    color: white;
+    border-bottom-color: var(--ferrari-red);
+    background: rgba(255,30,30,0.05);
+  }
+  
+  /* Problem Content */
+  .lc-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+  }
+  .lc-problem-header {
+    margin-bottom: 24px;
+  }
+  .lc-problem-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .lc-problem-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+  .lc-difficulty {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .lc-difficulty.easy { background: rgba(46, 160, 67, 0.2); color: #2ea043; border: 1px solid rgba(46,160,67,0.3); }
+  .lc-difficulty.medium { background: rgba(210, 153, 34, 0.2); color: #d29922; border: 1px solid rgba(210,153,34,0.3); }
+  .lc-difficulty.hard { background: rgba(248, 81, 73, 0.2); color: #f85149; border: 1px solid rgba(248,81,73,0.3); }
+  
+  .lc-description {
+    font-size: 14px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 24px;
+  }
+  .lc-description strong { color: white; }
+  
+  .lc-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    margin: 24px 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* Examples */
+  .lc-example {
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .lc-example-header {
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.03);
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .lc-example-body {
+    padding: 16px;
+    background: #0d1117;
+  }
+  .lc-example-row {
+    margin-bottom: 12px;
+  }
+  .lc-example-row:last-child { margin-bottom: 0; }
+  .lc-example-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .lc-example-value {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    color: #e6edf3;
+    background: rgba(255,255,255,0.05);
+    padding: 10px 12px;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  
+  /* Constraints */
+  .lc-constraints {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .lc-constraint-item {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .lc-constraint-item:last-child { border-bottom: none; }
+  .lc-constraint-item::before {
+    content: '•';
+    color: var(--ferrari-red);
+    margin-right: 8px;
+  }
+  
+  /* Editor Area */
+  .lc-editor-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: #141414;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .lc-lang-select {
+    background: #0d1117;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+  }
+  .lc-lang-select:focus { border-color: var(--ferrari-red); }
+  .lc-editor-toolbar {
+    display: flex;
+    gap: 8px;
+  }
+  
+  /* LeetCode-style Buttons */
+  .lc-btn {
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .lc-btn-run {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .lc-btn-run:hover { background: rgba(255,255,255,0.15); }
+  .lc-btn-submit {
+    background: var(--ferrari-red);
+    color: white;
+  }
+  .lc-btn-submit:hover { background: #e61919; }
+  
+  .lc-editor-area {
+    flex: 1;
+    min-height: 300px;
+    background: #0d1117;
+  }
+  
+  /* Console / Test Cases */
+  .lc-console-tabs {
+    display: flex;
+    background: #141414;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .lc-console-tab {
+    padding: 10px 20px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+  }
+  .lc-console-tab.active {
+    color: white;
+    border-bottom-color: var(--ferrari-red);
+  }
+  .lc-console-content {
+    flex: 1;
+    background: #0a0a0a;
+    padding: 16px;
+    overflow-y: auto;
+  }
+  .lc-console-output {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    color: rgba(255,255,255,0.8);
+  }
+  .lc-console-output.success { color: #2ea043; }
+  .lc-console-output.error { color: #f85149; }
+  .lc-console-output.warning { color: #d29922; }
+  
+  /* Custom Input */
+  .lc-custom-input {
+    width: 100%;
+    min-height: 100px;
+    background: #0d1117;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 12px;
+    color: white;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    resize: vertical;
+  }
+  .lc-custom-input:focus {
+    outline: none;
+    border-color: var(--ferrari-red);
+  }
+  
+  /* Solution Panel */
+  .lc-solution {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    background: #141414;
+  }
+  .lc-solution-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+  .lc-solution-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .lc-solution-arrow {
+    transition: transform 0.2s;
+    color: rgba(255,255,255,0.5);
+  }
+  .lc-solution-arrow.open { transform: rotate(90deg); }
+  .lc-solution-body {
+    display: none;
+    padding: 16px;
+    background: #0a0a0a;
+  }
+  .lc-solution-body.open { display: block; }
+  .lc-solution-code {
+    background: #0d1117;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    color: #e6edf3;
+    overflow-x: auto;
+    white-space: pre;
+    margin-bottom: 16px;
+  }
+  
+  /* Loading Spinner */
+  .lc-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: var(--ferrari-red);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  @media (max-width: 900px) {
+    .lc-shell { grid-template-columns: 1fr; height: auto; }
+    .lc-left { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  }
+</style>
+
+<div class="lc-shell">
+  <!-- LEFT: Problem Panel -->
+  <div class="lc-left">
+    <!-- Tabs -->
+    <div class="lc-tabs" id="leftTabs">
+      <div class="lc-tab active" data-tab="description">Description</div>
+      <div class="lc-tab" data-tab="editorial">Editorial</div>
+      <div class="lc-tab" data-tab="solutions">Solutions</div>
+      <div class="lc-tab" data-tab="submissions">Submissions</div>
+    </div>
+    
+    <!-- Panels -->
+    <!-- Description Panel -->
+    <div class="lc-content lc-left-panel" id="tabContent-description">
+      <div class="lc-problem-header">
+        <div class="lc-problem-title">
+          {{ problem.id }}. {{ problem.title }}
+          <span class="lc-difficulty {{ problem.difficulty }}">{{ problem.difficulty|capitalize }}</span>
+        </div>
+        <div class="lc-problem-meta">
+          <span><i data-lucide="thumbs-up" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"></i> 85.4K</span>
+          <span><i data-lucide="message-square" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"></i> 2.1K</span>
+          <span>Acceptance: {{ problem.acceptance|default('64.2') }}%</span>
+        </div>
+      </div>
+      
+      <div class="lc-description">{{ problem.description|safe }}</div>
+
+      <div class="lc-section-title">
+        <i data-lucide="alert-circle" style="width:16px;height:16px;"></i>
+        Constraints
+      </div>
+      <div class="lc-constraints" id="constraintsBox"></div>
+
+      <div class="lc-section-title">
+        <i data-lucide="play-circle" style="width:16px;height:16px;"></i>
+        Examples
+      </div>
+      <div id="sampleCases"></div>
+    </div>
+
+    <!-- Editorial Panel -->
+    <div class="lc-content lc-left-panel" id="tabContent-editorial" style="display:none; padding: 20px;">
+      <div style="font-size:18px; font-weight:600; margin-bottom:16px; color:#e6edf3;">Editorial</div>
+      <div style="background:rgba(46,160,67,0.1); border:1px solid rgba(46,160,67,0.2); border-radius:8px; padding:12px 16px; color:#2ea043; font-size:13px; margin-bottom:20px;">
+        <i data-lucide="check-circle" style="width:16px;height:16px;vertical-align:middle;margin-right:4px;"></i> Official Solution
+      </div>
+      <div id="editorialExplanation" style="font-size:14px; color:rgba(255,255,255,0.7); line-height:1.6; margin-bottom:16px;"></div>
+      <pre id="editorialCode" style="background:#0d1117; border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:16px; overflow-x:auto; font-family:monospace; font-size:13px; color:#e6edf3;"></pre>
+    </div>
+
+    <!-- Solutions Panel -->
+    <div class="lc-content lc-left-panel" id="tabContent-solutions" style="display:none; padding: 40px 20px; text-align:center;">
+      <i data-lucide="users" style="width:48px;height:48px;color:rgba(255,255,255,0.2);margin-bottom:16px;"></i>
+      <div style="font-size:16px; font-weight:600; color:#e6edf3; margin-bottom:8px;">Community Solutions</div>
+      <div style="font-size:14px; color:rgba(255,255,255,0.5);">Coming soon! See how other developers solved this problem.</div>
+    </div>
+
+    <!-- Submissions Panel -->
+    <div class="lc-content lc-left-panel" id="tabContent-submissions" style="display:none; padding: 40px 20px; text-align:center;">
+      <i data-lucide="clock" style="width:48px;height:48px;color:rgba(255,255,255,0.2);margin-bottom:16px;"></i>
+      <div style="font-size:16px; font-weight:600; color:#e6edf3; margin-bottom:8px;">Submission History</div>
+      <div style="font-size:14px; color:rgba(255,255,255,0.5);">Run code to see your history here. Coming soon!</div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Editor + Console -->
+  <div class="lc-right">
+    <!-- Editor Header -->
+    <div class="lc-editor-header">
+      <select id="languageSelect" class="lc-lang-select">
+        <option value="python">Python3</option>
+        <option value="java">Java</option>
+        <option value="cpp">C++</option>
+        <option value="javascript">JavaScript</option>
+      </select>
+      <div class="lc-editor-toolbar">
+        <button class="lc-btn lc-btn-run" id="runBtn">
+          <i data-lucide="play" style="width:14px;height:14px;"></i>
+          Run
+        </button>
+        <button class="lc-btn lc-btn-submit" id="submitBtn">
+          <i data-lucide="cloud-upload" style="width:14px;height:14px;"></i>
+          Submit
+        </button>
+      </div>
+    </div>
+    
+    <!-- Monaco Editor -->
+    <div id="monacoEditor" class="lc-editor-area"></div>
+    
+    <!-- Console Tabs -->
+    <div class="lc-console-tabs">
+      <div class="lc-console-tab active" data-tab="testcase">Testcase</div>
+      <div class="lc-console-tab" data-tab="result">Test Result</div>
+    </div>
+    
+    <!-- Console Content -->
+    <div class="lc-console-content" id="consoleContent">
+      <!-- Testcase Tab -->
+      <div id="testcasePanel" class="lc-tab-panel">
+        <div style="display:flex; gap:8px; margin-bottom:16px; overflow-x:auto;" id="testcaseTabList"></div>
+        <textarea id="customInputBox" class="lc-custom-input" style="width:100%; height:150px; background:#0d1117; color:#e6edf3; border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:12px; font-family:monospace; font-size:13px; resize:vertical;" placeholder="Select a case or enter custom input here..."></textarea>
+      </div>
+      
+      <!-- Result Tab -->
+      <div id="resultPanel" class="lc-tab-panel" style="display:none;">
+        <div id="outputBox" class="lc-console-output">
+          <div style="color:rgba(255,255,255,0.5);">Click "Run" to check your code against the test cases.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="application/json" id="problemMeta">{{ problem|tojson }}</script>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.min.js"></script>
+<script src="{{ url_for('static', filename='js/coding.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block shell %}
+<div class="layout ferrari-bg">
+  <!-- Speed Lines Background -->
+  <div class="speed-lines" style="opacity: 0.15; z-index: 0;">
+    <div class="speed-line" style="top: 20%;"></div>
+    <div class="speed-line" style="top: 50%; animation-delay: 2s;"></div>
+    <div class="speed-line" style="top: 80%; animation-delay: 4s;"></div>
+  </div>
+  
+  {% include 'partials/sidebar.html' %}
+  <main class="main" style="position: relative; z-index: 1;">
+    <header class="topbar premium-card" style="padding: 16px 24px; margin-bottom: 20px;" data-aos="fade-down">
+      <div class="topbar-title" style="background: linear-gradient(135deg, white, rgba(255,30,30,0.8)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        {{ page_title }}
+      </div>
+      <div class="topbar-meta" style="color: rgba(255,255,255,0.5);">
+        <span style="color: var(--ferrari-red); font-weight: 600;">{{ current_user.username }}</span> · {{ current_user.role|capitalize }}
+      </div>
+    </header>
+    <section class="content">
+      {% block content %}{% endblock %}
+    </section>
+  </main>
+</div>
+{% endblock %}

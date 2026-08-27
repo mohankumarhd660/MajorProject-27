@@ -1,0 +1,181 @@
+{% extends 'layouts/app_layout.html' %}
+{% set page_title = 'Quiz Configuration' %}
+{% set nav_items = [
+  {'label':'Dashboard','href':url_for('student.dashboard'),'icon':'layout-dashboard','active':False},
+  {'label':'Tasks','href':url_for('student.tasks'),'icon':'check-square','active':False},
+  {'label':'Chat AI','href':url_for('student.chat'),'icon':'message-square','active':False},
+  {'label':'Coding Practice','href':url_for('student.coding_list'),'icon':'code','active':False},
+  {'label':'Analytics','href':url_for('student.analytics'),'icon':'bar-chart-3','active':False},
+] %}
+{% block content %}
+  <div class="page-head" data-aos="fade-down">
+    <div>
+      <div class="h1" style="font-size: 28px; font-weight: 800; background: linear-gradient(135deg, white, rgba(255,255,255,0.8)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        Configure Your Quiz
+      </div>
+      <div class="muted" style="color: rgba(255,255,255,0.5); margin-top: 8px;">Select topic, difficulty, and number of questions</div>
+    </div>
+  </div>
+
+  <div class="premium-card quiz-config-card hover-lift" data-aos="zoom-in" data-aos-delay="200" style="padding: 32px; max-width: 600px; border-left: 3px solid var(--ferrari-red);">
+    <form id="quizConfigForm" class="config-form" style="display: grid; gap: 24px;">
+      <div class="form-group" data-aos="fade-up" data-aos-delay="300">
+        <label class="field" style="display: block;">
+          <span style="display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.6); margin-bottom: 10px;">
+            <i data-lucide="book-open" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 6px; color: var(--ferrari-red);"></i>
+            Topic
+          </span>
+          <select id="topic" name="topic" class="input" style="width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white; font-size: 15px; cursor: pointer; transition: all 0.3s ease;">
+            <option value="all">All Topics</option>
+            {% for topic in topics %}
+              <option value="{{ topic }}">{{ topic|replace('_', ' ')|title }}</option>
+            {% endfor %}
+          </select>
+        </label>
+      </div>
+
+      <div class="form-group" data-aos="fade-up" data-aos-delay="400">
+        <label class="field" style="display: block;">
+          <span style="display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.6); margin-bottom: 10px;">
+            <i data-lucide="gauge" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 6px; color: var(--ferrari-red);"></i>
+            Difficulty Level
+          </span>
+          <select id="difficulty" name="difficulty" class="input" style="width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white; font-size: 15px; cursor: pointer; transition: all 0.3s ease;">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="form-group" data-aos="fade-up" data-aos-delay="500">
+        <label class="field" style="display: block;">
+          <span style="display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.6); margin-bottom: 10px;">
+            <i data-lucide="list-ordered" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 6px; color: var(--ferrari-red);"></i>
+            Number of Questions
+          </span>
+          <select id="num_questions" name="num_questions" class="input" style="width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: white; font-size: 15px; cursor: pointer; transition: all 0.3s ease;">
+            <option value="5">5 Questions</option>
+            <option value="10" selected>10 Questions</option>
+            <option value="15">15 Questions</option>
+            <option value="20">20 Questions</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="form-actions" data-aos="fade-up" data-aos-delay="600">
+        <button type="submit" class="btn-premium btn-ferrari pulse-glow" style="width: 100%; justify-content: center;">
+          <i data-lucide="play" style="width: 18px; height: 18px;"></i>
+          Start Quiz
+        </button>
+      </div>
+    </form>
+
+    <div class="quiz-info" style="margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.05);" data-aos="fade-up" data-aos-delay="700">
+      <div class="info-title" style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.6); margin-bottom: 16px;">
+        <i data-lucide="info" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 8px; color: var(--ferrari-red);"></i>
+        How it works
+      </div>
+      <div class="info-list" style="display: grid; gap: 12px;">
+        <div class="info-item" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.03);">
+          <span class="info-icon" style="font-size: 20px; flex-shrink: 0;">🎯</span>
+          <span style="font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.5;">Select a specific topic to focus your practice, or choose "All Topics" for mixed questions</span>
+        </div>
+        <div class="info-item" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.03);">
+          <span class="info-icon" style="font-size: 20px; flex-shrink: 0;">📊</span>
+          <span style="font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.5;">Easy: Shorter answers | Medium: Balanced | Hard: Complex explanations</span>
+        </div>
+        <div class="info-item" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.03);">
+          <span class="info-icon" style="font-size: 20px; flex-shrink: 0;">📈</span>
+          <span style="font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.5;">Your performance will be analyzed to identify strong and weak topics</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .quiz-config-card {
+      padding: 24px;
+      max-width: 600px;
+    }
+    .config-form {
+      display: grid;
+      gap: 20px;
+    }
+    .form-group {
+      width: 100%;
+    }
+    .field span {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(226, 232, 240, 0.85);
+      margin-bottom: 8px;
+    }
+    .input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      background: rgba(15, 23, 42, 0.5);
+      color: rgba(226, 232, 240, 0.92);
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .input:focus {
+      outline: none;
+      border-color: rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+    }
+    .form-actions {
+      margin-top: 10px;
+    }
+    .w-full {
+      width: 100%;
+    }
+    .quiz-info {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(148, 163, 184, 0.15);
+    }
+    .info-title {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 14px;
+      color: rgba(226, 232, 240, 0.9);
+    }
+    .info-list {
+      display: grid;
+      gap: 12px;
+    }
+    .info-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 14px;
+      color: rgba(226, 232, 240, 0.7);
+      line-height: 1.5;
+    }
+    .info-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+  </style>
+
+  <script>
+    document.getElementById('quizConfigForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const topic = document.getElementById('topic').value;
+      const difficulty = document.getElementById('difficulty').value;
+      const numQuestions = document.getElementById('num_questions').value;
+      
+      const params = new URLSearchParams({
+        topic: topic,
+        difficulty: difficulty,
+        num_questions: numQuestions
+      });
+      
+      window.location.href = '{{ url_for("student.quiz") }}?' + params.toString();
+    });
+  </script>
+{% endblock %}

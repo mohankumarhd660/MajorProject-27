@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block shell %}
+<div class="ferrari-bg" style="min-height: 100vh; display: grid; place-items: center; padding: 20px;">
+  <!-- Speed Lines Background -->
+  <div class="speed-lines" style="opacity: 0.3;">
+    <div class="speed-line" style="top: 30%;"></div>
+    <div class="speed-line" style="top: 60%; animation-delay: 1.5s;"></div>
+  </div>
+  
+  <!-- Back to Home -->
+  <a href="/" class="btn-premium btn-outline-premium" style="position: absolute; top: 30px; left: 30px; padding: 12px 24px; font-size: 13px;" data-aos="fade-down">
+    <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i>
+    Back
+  </a>
+
+  <!-- Premium Auth Card -->
+  <div class="premium-card" style="width: min(420px, 90vw); padding: 50px 40px;" data-aos="zoom-in" data-aos-duration="1000">
+    <!-- Racing Stripe -->
+    <div class="racing-stripe" style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px;"></div>
+    
+    <!-- Logo -->
+    <div style="text-align: center; margin-bottom: 30px;" data-aos="fade-up" data-aos-delay="200">
+      <div class="nav-logo" style="font-size: 28px; margin-bottom: 10px;">Smart Learn</div>
+      <div style="color: rgba(255,255,255,0.5); font-size: 13px; text-transform: uppercase; letter-spacing: 2px;">Premium Access</div>
+    </div>
+    
+    <div class="auth-title" style="font-size: 32px; font-weight: 800; text-align: center; margin-bottom: 10px;" data-aos="fade-up" data-aos-delay="300">
+      Welcome Back
+    </div>
+    <div class="auth-subtitle" style="color: rgba(255,255,255,0.5); text-align: center; margin-bottom: 30px; font-size: 15px;" data-aos="fade-up" data-aos-delay="400">
+      Sign in to continue your journey
+    </div>
+
+    {% if error %}
+      <div class="alert" style="background: rgba(255,30,30,0.15); border: 1px solid rgba(255,30,30,0.3); color: rgba(255,200,200,0.9); padding: 12px 16px; border-radius: 12px; margin-bottom: 20px; font-size: 14px;" data-aos="shake">
+        <i data-lucide="alert-circle" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 8px;"></i>
+        {{ error }}
+      </div>
+    {% endif %}
+
+    <form method="post" class="auth-form" style="display: grid; gap: 20px;" data-aos="fade-up" data-aos-delay="500">
+      {{ form.hidden_tag() }}
+      <label class="field" style="display: block;">
+        <span style="display: block; font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Username or Email</span>
+        {{ form.username(class_='input', placeholder='Enter your username', style='width: 100%; padding: 16px 18px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; font-size: 15px; outline: none; transition: all 0.3s ease;') }}
+      </label>
+      <label class="field" style="display: block;">
+        <span style="display: block; font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Password</span>
+        {{ form.password(class_='input', placeholder='Enter your password', style='width: 100%; padding: 16px 18px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; font-size: 15px; outline: none; transition: all 0.3s ease;') }}
+      </label>
+      <button type="submit" class="btn-premium btn-ferrari" style="width: 100%; margin-top: 10px; justify-content: center;" data-aos="fade-up" data-aos-delay="600">
+        <i data-lucide="log-in" style="width: 18px; height: 18px;"></i>
+        Sign In
+      </button>
+    </form>
+
+    <div style="text-align: center; color: rgba(255,255,255,0.4); margin: 15px 0;" data-aos="fade-up" data-aos-delay="630">— OR —</div>
+    
+    <button type="button" id="google-login-btn" class="btn-premium" style="width: 100%; justify-content: center; background: white; color: black;" data-aos="fade-up" data-aos-delay="650">
+      <svg style="width: 18px; height: 18px; margin-right: 8px;" viewBox="0 0 24 24">
+        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+      </svg>
+      Sign in with Google
+    </button>
+
+    <div class="auth-link" style="text-align: center; margin-top: 25px; color: rgba(255,255,255,0.5); font-size: 14px;" data-aos="fade-up" data-aos-delay="700">
+      No account? 
+      <a href="{{ url_for('auth.signup') }}" style="color: var(--ferrari-red); text-decoration: none; font-weight: 600; transition: color 0.3s ease;">
+        Create one now
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Input focus effects
+  document.querySelectorAll('.input').forEach(input => {
+    input.addEventListener('focus', function() {
+      this.style.borderColor = 'rgba(255,30,30,0.5)';
+      this.style.boxShadow = '0 0 20px rgba(255,30,30,0.2)';
+    });
+    input.addEventListener('blur', function() {
+      this.style.borderColor = 'rgba(255,255,255,0.1)';
+      this.style.boxShadow = 'none';
+    });
+  });
+</script>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script>
+  if (typeof firebase !== 'undefined' && "{{ fb_config.apiKey }}") {
+    const firebaseConfig = {
+      apiKey: "{{ fb_config.apiKey }}",
+      authDomain: "{{ fb_config.authDomain }}",
+      projectId: "{{ fb_config.projectId }}"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    document.getElementById('google-login-btn').addEventListener('click', () => {
+      auth.signInWithPopup(provider).then((result) => {
+        return result.user.getIdToken();
+      }).then((idToken) => {
+        return fetch('/google-login', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token() }}'
+          },
+          body: JSON.stringify({ id_token: idToken })
+        });
+      }).then((response) => response.json())
+        .then((data) => {
+          if (data.status === 'success') {
+            window.location.href = data.redirect;
+          } else {
+            alert("Login failed: " + data.error);
+          }
+        }).catch((error) => {
+          console.error("Google Sign In Error:", error);
+          alert("Google Sign-In failed: " + error.message + "\n\nDid you enable 'Google' in Firebase Console -> Authentication -> Sign-in method?");
+        });
+    });
+  } else {
+    document.getElementById('google-login-btn').style.display = 'none';
+  }
+</script>
+{% endblock %}

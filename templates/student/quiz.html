@@ -1,0 +1,31 @@
+{% extends 'layouts/app_layout.html' %}
+{% set page_title = 'Quiz' %}
+{% set nav_items = [
+  {'label':'Dashboard','href':url_for('student.dashboard'),'icon':'layout-dashboard','active':False},
+  {'label':'Tasks','href':url_for('student.tasks'),'icon':'check-square','active':True},
+  {'label':'Chat AI','href':url_for('student.chat'),'icon':'message-square','active':False},
+  {'label':'Coding Practice','href':url_for('student.coding_list'),'icon':'code','active':False},
+  {'label':'Analytics','href':url_for('student.analytics'),'icon':'bar-chart-3','active':False},
+] %}
+{% block content %}
+  <div class="page-head" data-aos="fade-down">
+    <div>
+      <div class="h1" style="font-size: 28px; font-weight: 800; background: linear-gradient(135deg, white, rgba(255,255,255,0.8)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        Quiz Session
+      </div>
+      <div class="muted" style="color: rgba(255,255,255,0.5); margin-top: 8px;">
+        <i data-lucide="clock" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 6px; color: var(--ferrari-red);"></i>
+        Answer and submit to store results
+      </div>
+    </div>
+  </div>
+
+  <div class="premium-card quiz-card hover-lift" data-aos="zoom-in" data-aos-delay="200" style="padding: 32px; border-left: 3px solid var(--ferrari-red);">
+    <div id="quizHost"></div>
+  </div>
+
+  <script type="application/json" id="quizData">{{ quiz_json|safe }}</script>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+{% endblock %}

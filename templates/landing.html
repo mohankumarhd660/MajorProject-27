@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% block shell %}
+<!-- Premium Navigation -->
+<nav class="nav-premium" data-aos="fade-down" data-aos-duration="1000">
+  <div class="nav-logo">Smart Learn</div>
+  <div class="nav-links">
+    <a href="#hero" class="nav-link">Home</a>
+    <a href="#features" class="nav-link">Features</a>
+    <a href="#stats" class="nav-link">Stats</a>
+    <a href="{{ url_for('auth.login') }}" class="nav-link">Login</a>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="hero" class="hero-section ferrari-bg">
+  <div class="speed-lines">
+    <div class="speed-line" style="top: 20%; animation-delay: 0s;"></div>
+    <div class="speed-line" style="top: 40%; animation-delay: 1s;"></div>
+    <div class="speed-line" style="top: 60%; animation-delay: 2s;"></div>
+    <div class="speed-line" style="top: 80%; animation-delay: 0.5s;"></div>
+  </div>
+  
+  <div class="hero-content">
+    <div class="hero-badge" data-aos="fade-up" data-aos-delay="200">
+      <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
+      AI-Powered Learning
+    </div>
+    
+    <h1 class="premium-title" data-aos="zoom-in" data-aos-delay="400">
+      Master Your<br>
+      <span class="gradient-text-animated">Potential</span>
+    </h1>
+    
+    <p class="premium-subtitle" data-aos="fade-up" data-aos-delay="600">
+      The Future of Education is Here
+    </p>
+    
+    <p class="premium-text" data-aos="fade-up" data-aos-delay="800" style="max-width: 600px; margin: 20px auto;">
+      Experience a handcrafted premium learning platform with AI-driven insights, 
+      real-time coding practice, and personalized analytics.
+    </p>
+    
+    <div class="landing-actions" data-aos="fade-up" data-aos-delay="1000" style="margin-top: 40px;">
+      <a class="btn-premium btn-ferrari pulse-glow" href="{{ url_for('auth.signup') }}">
+        <i data-lucide="rocket" style="width:18px;height:18px;"></i>
+        Get Started
+      </a>
+      <a class="btn-premium btn-outline-premium" href="{{ url_for('auth.login') }}">
+        Sign In
+      </a>
+    </div>
+  </div>
+  
+  <!-- Floating Elements -->
+  <div class="float" style="position: absolute; top: 15%; right: 10%; opacity: 0.1;" data-aos="fade-left" data-aos-delay="1200">
+    <i data-lucide="brain" style="width: 120px; height: 120px;"></i>
+  </div>
+  <div class="float" style="position: absolute; bottom: 20%; left: 8%; opacity: 0.08; animation-delay: -3s;" data-aos="fade-right" data-aos-delay="1400">
+    <i data-lucide="code-2" style="width: 100px; height: 100px;"></i>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="ferrari-bg" style="padding: 100px 0;">
+  <div style="text-align: center; margin-bottom: 60px;" data-aos="fade-up">
+    <h2 class="premium-subtitle" style="color: var(--ferrari-red);">Features</h2>
+    <h3 class="premium-title" style="font-size: clamp(32px, 5vw, 48px);">Crafted for Excellence</h3>
+  </div>
+  
+  <div class="feature-grid" style="max-width: 1200px; margin: 0 auto;">
+    <div class="feature-card hover-lift shine" data-aos="fade-up" data-aos-delay="100">
+      <div class="feature-icon">
+        <i data-lucide="message-square" style="width: 28px; height: 28px; color: white;"></i>
+      </div>
+      <h4 class="feature-title">AI Chat Assistant</h4>
+      <p class="feature-desc">Engage with intelligent AI that learns from your interactions and provides personalized guidance.</p>
+    </div>
+    
+    <div class="feature-card hover-lift shine" data-aos="fade-up" data-aos-delay="200">
+      <div class="feature-icon">
+        <i data-lucide="help-circle" style="width: 28px; height: 28px; color: white;"></i>
+      </div>
+      <h4 class="feature-title">Smart Quizzes</h4>
+      <p class="feature-desc">Adaptive assessments that identify weak areas and automatically suggest targeted practice.</p>
+    </div>
+    
+    <div class="feature-card hover-lift shine" data-aos="fade-up" data-aos-delay="300">
+      <div class="feature-icon">
+        <i data-lucide="code" style="width: 28px; height: 28px; color: white;"></i>
+      </div>
+      <h4 class="feature-title">Code Practice</h4>
+      <p class="feature-desc">LeetCode-style coding platform with real-time execution and hidden test cases.</p>
+    </div>
+    
+    <div class="feature-card hover-lift shine" data-aos="fade-up" data-aos-delay="400">
+      <div class="feature-icon">
+        <i data-lucide="bar-chart-3" style="width: 28px; height: 28px; color: white;"></i>
+      </div>
+      <h4 class="feature-title">Analytics</h4>
+      <p class="feature-desc">Subject-wise performance tracking with beautiful visualizations and progress insights.</p>
+    </div>
+    
+    <div class="feature-card hover-lift shine" data-aos="fade-up" data-aos-delay="500">
+      <div class="feature-icon">
+        <i data-lucide="shield-check" style="width: 28px; height: 28px; color: white;"></i>
+      </div>
+      <h4 class="feature-title">Firebase Auth</h4>
+      <p class="feature-desc">Enterprise-grade security with seamless authentication and user management.</p>
+    </div>
+    
+    <div class="feature-card hover-lift shine" data-aos="fade-up" data-aos-delay="600">
+      <div class="feature-icon">
+        <i data-lucide="zap" style="width: 28px; height: 28px; color: white;"></i>
+      </div>
+      <h4 class="feature-title">Real-time Sync</h4>
+      <p class="feature-desc">Instant progress tracking and seamless multi-device experience.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section id="stats" class="ferrari-bg stats-section" style="background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 50%, #0a0a0a 100%);">
+  <div class="stat-item" data-aos="zoom-in" data-aos-delay="100">
+    <div class="stat-number" data-count="10000">0</div>
+    <div class="stat-label">Questions</div>
+  </div>
+  <div class="stat-item" data-aos="zoom-in" data-aos-delay="200">
+    <div class="stat-number" data-count="6612">0</div>
+    <div class="stat-label">Coding Problems</div>
+  </div>
+  <div class="stat-item" data-aos="zoom-in" data-aos-delay="300">
+    <div class="stat-number" data-count="4">0</div>
+    <div class="stat-label">Subjects</div>
+  </div>
+  <div class="stat-item" data-aos="zoom-in" data-aos-delay="400">
+    <div class="stat-number" data-count="100">0</div>
+    <div class="stat-label">% Satisfaction</div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section ferrari-bg">
+  <div data-aos="fade-up" data-aos-duration="1200">
+    <h2 class="premium-title" style="font-size: clamp(36px, 5vw, 64px); margin-bottom: 20px;">
+      Ready to Start?
+    </h2>
+    <p class="premium-text" style="margin-bottom: 40px;">
+      Join thousands of learners accelerating their potential today.
+    </p>
+    <a class="btn-premium btn-ferrari" href="{{ url_for('auth.signup') }}" style="font-size: 16px; padding: 20px 48px;">
+      <i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i>
+      Create Free Account
+    </a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="ferrari-bg" style="padding: 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
+  <div class="nav-logo" style="margin-bottom: 20px; font-size: 20px;">Smart Learning Assistant</div>
+  <p style="color: rgba(255,255,255,0.4); font-size: 14px;">
+    Handcrafted with precision and passion · Premium Learning Experience
+  </p>
+  <p style="color: rgba(255,255,255,0.3); font-size: 12px; margin-top: 10px;">
+    Dark UI · Glassmorphism · Ferrari-inspired Design · GSAP Animations
+  </p>
+</footer>
+
+<!-- GSAP Animations Script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Register ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger);
+    
+    // Animate stat numbers
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(stat => {
+      const target = parseInt(stat.getAttribute('data-count'));
+      gsap.to(stat, {
+        innerHTML: target,
+        duration: 2,
+        snap: { innerHTML: 1 },
+        scrollTrigger: {
+          trigger: stat,
+          start: 'top 80%',
+          once: true
+        }
+      });
+    });
+    
+    // Parallax effect for hero
+    gsap.to('.hero-content', {
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1
+      },
+      y: 100,
+      opacity: 0
+    });
+    
+    // Speed lines animation
+    gsap.utils.toArray('.speed-line').forEach((line, i) => {
+      gsap.to(line, {
+        x: '100vw',
+        duration: 2 + i * 0.5,
+        repeat: -1,
+        ease: 'none',
+        delay: i * 0.3
+      });
+    });
+    
+    // Feature cards stagger
+    gsap.from('.feature-card', {
+      scrollTrigger: {
+        trigger: '#features',
+        start: 'top 70%'
+      },
+      y: 60,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'power3.out'
+    });
+  });
+</script>
+{% endblock %}

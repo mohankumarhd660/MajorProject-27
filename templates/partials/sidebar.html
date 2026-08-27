@@ -1,0 +1,33 @@
+<aside class="sidebar" style="background: linear-gradient(180deg, rgba(10,10,10,0.95) 0%, rgba(15,15,15,0.9) 100%); border-right: 1px solid rgba(255,30,30,0.1);">
+  <div class="sidebar-top" data-aos="fade-right" data-aos-delay="100">
+    <div class="brand">
+      <div class="brand-dot" style="background: linear-gradient(135deg, var(--ferrari-red), var(--ferrari-dark-red)); box-shadow: 0 8px 30px rgba(255,30,30,0.4);"></div>
+      <div>
+        <div class="brand-title" style="background: linear-gradient(135deg, white, var(--ferrari-red)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">SmartLearn</div>
+        <div class="brand-subtitle" style="color: rgba(255,255,255,0.4);">AI Learning Platform</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    {% for item in nav_items %}
+      <a class="nav-item {% if item.active %}active{% endif %} hover-lift" href="{{ item.href }}" data-aos="fade-right" data-aos-delay="{{ 200 + loop.index0 * 100 }}">
+        <span class="nav-icon" aria-hidden="true" style="{% if item.active %}color: var(--ferrari-red); filter: drop-shadow(0 0 8px rgba(255,30,30,0.5));{% endif %}">
+          <i data-lucide="{{ item.icon }}"></i>
+        </span>
+        <span class="nav-label">{{ item.label }}</span>
+        {% if item.active %}
+        <span style="margin-left: auto; width: 3px; height: 20px; background: var(--ferrari-red); border-radius: 2px; box-shadow: 0 0 10px rgba(255,30,30,0.5);"></span>
+        {% endif %}
+      </a>
+    {% endfor %}
+  </nav>
+
+  <form class="sidebar-bottom" method="post" action="{{ url_for('auth.logout') }}" data-aos="fade-up" data-aos-delay="600">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <button type="submit" class="logout-btn" style="background: rgba(255,30,30,0.1); border: 1px solid rgba(255,30,30,0.2); color: rgba(255,255,255,0.8); transition: all 0.3s ease;">
+      <span class="nav-icon" aria-hidden="true" style="color: var(--ferrari-red);"><i data-lucide="log-out"></i></span>
+      <span class="nav-label">Logout</span>
+    </button>
+  </form>
+</aside>

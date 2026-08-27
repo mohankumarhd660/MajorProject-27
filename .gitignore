@@ -1,0 +1,22 @@
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment Variables and Secrets
+.env
+firebase_key.json
+*.pem
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE and OS Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

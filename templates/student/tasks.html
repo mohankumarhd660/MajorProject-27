@@ -1,0 +1,50 @@
+{% extends 'layouts/app_layout.html' %}
+{% set page_title = 'Tasks' %}
+{% set nav_items = [
+  {'label':'Dashboard','href':url_for('student.dashboard'),'icon':'layout-dashboard','active':False},
+  {'label':'Tasks','href':url_for('student.tasks'),'icon':'check-square','active':True},
+  {'label':'Chat AI','href':url_for('student.chat'),'icon':'message-square','active':False},
+  {'label':'Coding Practice','href':url_for('student.coding_list'),'icon':'code','active':False},
+  {'label':'Analytics','href':url_for('student.analytics'),'icon':'bar-chart-3','active':False},
+] %}
+{% block content %}
+  <div class="page-head" data-aos="fade-down">
+    <div>
+      <div class="h1" style="font-size: 28px; font-weight: 800; background: linear-gradient(135deg, white, rgba(255,255,255,0.8)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        Your Tasks
+      </div>
+      <div class="muted" style="color: rgba(255,255,255,0.5); margin-top: 8px;">Learning · Quiz · Coding</div>
+    </div>
+  </div>
+
+  <div class="task-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+    {% for t in tasks %}
+      <div class="premium-card task-card hover-lift shine" data-aos="fade-up" data-aos-delay="{{ 100 + loop.index0 * 100 }}" style="padding: 24px; border-left: 3px solid {% if t.status == 'completed' %}rgba(16,185,129,0.8){% else %}var(--ferrari-red){% endif %};">
+        <div class="task-title" style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: white;">{{ t.title }}</div>
+        <div class="task-meta" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+          <span class="pill" style="font-size: 12px; padding: 6px 12px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);">{{ t.subject }}</span>
+          <span class="pill" style="font-size: 12px; padding: 6px 12px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);">{{ t.difficulty|capitalize }}</span>
+          <span class="pill" style="font-size: 12px; padding: 6px 12px; border-radius: 20px; {% if t.status == 'completed' %}background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: rgba(16,185,129,0.9);{% else %}background: rgba(255,30,30,0.15); border: 1px solid rgba(255,30,30,0.3); color: rgba(255,30,30,0.9);{% endif %}">{{ t.status }}</span>
+        </div>
+        <div class="task-actions">
+          {% if t.task_type == 'quiz' %}
+            <a class="btn-premium btn-ferrari" href="{{ url_for('student.quiz_config') }}" style="padding: 10px 20px; font-size: 13px;">
+              <i data-lucide="play-circle" style="width: 14px; height: 14px;"></i>
+              Take Quiz
+            </a>
+          {% elif t.task_type == 'coding' %}
+            <a class="btn-premium btn-outline-premium" href="{{ url_for('student.coding_list') }}" style="padding: 10px 20px; font-size: 13px;">
+              <i data-lucide="code" style="width: 14px; height: 14px;"></i>
+              Open Coding
+            </a>
+          {% else %}
+            <a class="btn-premium btn-gold" href="{{ url_for('student.chat') }}" style="padding: 10px 20px; font-size: 13px;">
+              <i data-lucide="message-square" style="width: 14px; height: 14px;"></i>
+              Ask AI
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

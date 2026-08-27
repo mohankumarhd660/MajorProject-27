@@ -1,0 +1,59 @@
+{% extends 'layouts/app_layout.html' %}
+{% set page_title = 'Chat AI' %}
+{% set nav_items = [
+  {'label':'Dashboard','href':url_for('student.dashboard'),'icon':'layout-dashboard','active':False},
+  {'label':'Tasks','href':url_for('student.tasks'),'icon':'check-square','active':False},
+  {'label':'Chat AI','href':url_for('student.chat'),'icon':'message-square','active':True},
+  {'label':'Coding Practice','href':url_for('student.coding_list'),'icon':'code','active':False},
+  {'label':'Analytics','href':url_for('student.analytics'),'icon':'bar-chart-3','active':False},
+] %}
+{% block content %}
+<div class="chat-shell">
+  <div class="chat-history premium-card" data-aos="fade-right" data-aos-delay="100" style="padding: 20px;">
+    <div class="chat-history-title" style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.6); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+      <i data-lucide="message-square" style="width: 16px; height: 16px; color: var(--ferrari-red);"></i>
+      Chats
+    </div>
+    <div class="chat-history-items" id="chatThreads">
+      <button class="thread active" data-thread="default" style="border-color: rgba(255,30,30,0.3); background: rgba(255,30,30,0.1);">
+        <div class="thread-title">General</div>
+        <div class="thread-sub">Conversation</div>
+      </button>
+    </div>
+  </div>
+
+  <div class="chat-main premium-card" data-aos="fade-left" data-aos-delay="200" style="background: rgba(10,10,10,0.6);">
+    <div class="chat-window" id="chatWindow" style="background: transparent;"></div>
+
+    <div class="chat-inputbar" style="background: linear-gradient(180deg, transparent, rgba(10,10,10,0.95)); border-top: 1px solid rgba(255,30,30,0.1);">
+      <div class="chat-inputwrap">
+        <input id="chatInput" class="chat-input" style="border-color: rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); color: white;" placeholder="Ask anything from your course / DSA / quizzes..." />
+        <button id="sendBtn" class="btn-premium btn-ferrari pulse-glow" style="padding: 12px 24px;">
+          <i data-lucide="send" style="width: 16px; height: 16px;"></i>
+          Send
+        </button>
+      </div>
+      <div class="chat-hint" style="color: rgba(255,255,255,0.4);">Responses are shown as clean, readable paragraphs.</div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+<script>
+  // Enhance chat input focus effect
+  document.addEventListener('DOMContentLoaded', function() {
+    const chatInput = document.getElementById('chatInput');
+    if (chatInput) {
+      chatInput.addEventListener('focus', function() {
+        this.style.borderColor = 'rgba(255,30,30,0.5)';
+        this.style.boxShadow = '0 0 20px rgba(255,30,30,0.1)';
+      });
+      chatInput.addEventListener('blur', function() {
+        this.style.borderColor = 'rgba(255,255,255,0.1)';
+        this.style.boxShadow = 'none';
+      });
+    }
+  });
+</script>
+{% endblock %}
