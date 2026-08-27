@@ -16,16 +16,22 @@ def init_firebase():
     if _firebase_app is not None:
         return _firebase_app
     
-    cred_path = os.getenv("FIREBASE_CREDENTIALS", "firebase_key.json")
-    
-    # Check if credentials file exists
-    if not Path(cred_path).exists():
-        print(f"Warning: Firebase credentials file not found at {cred_path}")
-        print("Firebase authentication will be disabled.")
-        return None
+    cred_env = os.getenv("FIREBASE_CREDENTIALS", "firebase_key.json")
     
     try:
-        cred = credentials.Certificate(cred_path)
+        if cred_env.strip().startswith('{'):
+            # It's a JSON string from environment variables
+            import json
+            cred_dict = json.loads(cred_env)
+            cred = credentials.Certificate(cred_dict)
+        else:
+            # It's a file path
+            if not Path(cred_env).exists():
+                print(f"Warning: Firebase credentials file not found at {cred_env}")
+                print("Firebase authentication will be disabled.")
+                return None
+            cred = credentials.Certificate(cred_env)
+            
         _firebase_app = firebase_admin.initialize_app(cred)
         print("Firebase Admin SDK initialized successfully")
         return _firebase_app
