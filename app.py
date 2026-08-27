@@ -30,8 +30,8 @@ def create_app():
     # Initialize Firebase (optional - app works without it)
     init_firebase()
 
-    load_dataset_into_db()
-    build_or_load_index(force_rebuild=False)
+    # load_dataset_into_db()
+    # build_or_load_index(force_rebuild=False)
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(student_bp)
