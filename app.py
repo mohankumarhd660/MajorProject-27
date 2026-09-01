@@ -20,7 +20,17 @@ def create_app():
 
     app = Flask(__name__, template_folder="templates", static_folder="static")
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev")
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"
+    db_path = "app.db"
+    if os.environ.get("WEBSITE_SITE_NAME"):
+        import shutil
+        writable_dir = "/home/data"
+        os.makedirs(writable_dir, exist_ok=True)
+        writable_db_path = os.path.join(writable_dir, "app.db")
+        if not os.path.exists(writable_db_path) and os.path.exists("app.db"):
+            shutil.copy2("app.db", writable_db_path)
+        db_path = writable_db_path
+
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     configure_security(app)
