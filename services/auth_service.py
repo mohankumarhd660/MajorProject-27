@@ -17,6 +17,11 @@ def create_user(username: str, password: str, role: str, email: str = None) -> U
     if existing:
         raise ValueError("Username already exists")
 
+    if email:
+        existing_email = db.query(User).filter(User.email == email).first()
+        if existing_email:
+            raise ValueError("Email already registered")
+
     if role not in {"student", "teacher"}:
         raise ValueError("Invalid role")
 
@@ -44,7 +49,14 @@ def create_user(username: str, password: str, role: str, email: str = None) -> U
         firebase_uid=firebase_uid
     )
     db.add(user)
-    db.commit()
+    
+    from sqlalchemy.exc import IntegrityError
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise ValueError("Database error: Unique constraint failed. Email or username already exists.")
+        
     db.refresh(user)
     return user
 
