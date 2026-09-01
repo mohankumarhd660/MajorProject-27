@@ -47,24 +47,7 @@ def answer_query(user_id: int, thread_id: str, query: str) -> dict:
 
     _save_chat(db, user_id, thread_id, "user", query, "ai")
 
-    # Retrieve context from FAISS
-    from faiss_engine.indexer import search
-    results = search(query, k=1)
-    context_entries = []
-    for r in results:
-        entry = db.query(DatasetEntry).filter(DatasetEntry.id == r["id"]).first()
-        if entry:
-            if entry.question and entry.answer:
-                context_entries.append(f"Q: {entry.question}\nA: {entry.answer}")
-            elif entry.raw_text:
-                context_entries.append(entry.raw_text)
-    
-    context_str = "\n\n".join(context_entries)[:1000]
-    
-    if context_str:
-        prompt = f"Context information is below.\n---------------------\n{context_str}\n---------------------\nGiven the context information and no prior knowledge, answer the user's query: {query}"
-    else:
-        prompt = query
+    prompt = query
 
     content = groq_chat(prompt)
     content = _format_paragraphs(content)
