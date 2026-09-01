@@ -41,6 +41,8 @@ jobs:
             .
             !antenv/
 
+
+
       # 🚫 Opting Out of Oryx Build
       # If you prefer to disable the Oryx build process during deployment, follow these steps:
       # 1. Remove the SCM_DO_BUILD_DURING_DEPLOYMENT app setting from your Azure App Service Environment variables.
@@ -59,6 +61,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: python-app
+          path: .
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -73,4 +76,4 @@ jobs:
         with:
           app-name: 'SmartLearn'
           slot-name: 'Production'
-          
+          package: .
