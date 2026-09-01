@@ -93,7 +93,8 @@ def list_coding_problems(user_id: int = None):
     
     # Get user's submissions grouped by problem
     from sqlalchemy import func
-    subq = (
+    
+    user_status = (
         db.query(
             Submission.problem_id,
             func.max(Submission.status == "accepted").label("solved"),
@@ -101,16 +102,18 @@ def list_coding_problems(user_id: int = None):
         )
         .filter(Submission.user_id == user_id)
         .group_by(Submission.problem_id)
-        .subquery()
+        .all()
     )
+    
+    status_map = {row.problem_id: row for row in user_status}
     
     results = []
     for p in problems:
-        status = db.query(subq).filter(subq.c.problem_id == p.id).first()
+        s = status_map.get(p.id)
         results.append({
             "problem": p,
-            "solved": bool(status.solved) if status else False,
-            "attempts": status.attempts if status else 0,
+            "solved": bool(s.solved) if s else False,
+            "attempts": s.attempts if s else 0,
         })
     return results
 
