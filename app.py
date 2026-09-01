@@ -11,7 +11,7 @@ from routes.student import student_bp
 from routes.teacher import teacher_bp
 from routes.api import api_bp
 from services.dataset_loader import load_dataset_into_db
-from faiss_engine.indexer import build_or_load_index
+
 from services.firebase_service import init_firebase
 
 
