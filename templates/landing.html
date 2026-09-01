@@ -210,18 +210,7 @@
       });
     });
     
-    // Feature cards stagger
-    gsap.from('.feature-card', {
-      scrollTrigger: {
-        trigger: '#features',
-        start: 'top 70%'
-      },
-      y: 60,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: 'power3.out'
-    });
+    // Feature cards stagger (Removed to prevent conflict with AOS)
   });
 </script>
 {% endblock %}
