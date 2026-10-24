@@ -1,0 +1,32 @@
+=====================================================
+SmartLearn - How to Run (Demo Branch)
+=====================================================
+
+1. (Optional) Activate your Python virtual environment:
+   Windows (PowerShell):
+   .\.venv\Scripts\Activate.ps1
+
+   Windows (CMD):
+   .\.venv\Scripts\activate.bat
+
+   Linux / macOS:
+   source .venv/bin/activate
+
+   *Note: If you don't have a virtual environment yet, create one with:
+   py -3.11 -m venv .venv
+   or
+   python -m venv .venv
+
+2. Install all required dependencies:
+   pip install -r requirements.txt
+
+3. Ensure .env file is present:
+   If .env is not present, copy from .env.example:
+   copy .env.example .env
+   (Make sure GROQ_API_KEY and SECRET_KEY are configured)
+
+4. Run the application:
+   python app.py
+
+5. Access the application in your browser:
+   http://127.0.0.1:5000/
