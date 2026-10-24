@@ -1,4 +1,4 @@
-# SmartLearn (AI-Powered Smart Learning Assistant)
+# SmartLearn ( AI-Powered Smart Learning Assistant )
 
 ## Setup
 
