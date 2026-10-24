@@ -1,0 +1,27 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Git & GitHub
+.git/
+.github/
+.gitignore
+
+# Environment & credentials (pass via environment variables / secret manager instead)
+.env
+firebase_key.json
+*.pem
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
